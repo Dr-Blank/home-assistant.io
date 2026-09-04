@@ -51,17 +51,17 @@ A climate entity and four button entities are created for each Fujitsu General a
 - **Fujitsu AC**
   - **Description**: Represents the Fujitsu General air conditioner and allows you to control it using infrared commands.
   - **Supported features**: Set HVAC mode, set target temperature, set fan mode, and set swing mode.
-- **Vertical louvre position** and **Horizontal louvre position**
+- **Move vertical louvre** and **Move horizontal louvre**
   - **Description**: Moves the louvre one step to its next position, the same as the position buttons on the remote.
-- **Economy**
+- **Economy mode**
   - **Description**: Toggles economy mode.
-- **Powerful**
+- **Powerful mode**
   - **Description**: Toggles the powerful, or turbo, boost.
 
 - **Remote button**
   - **Description**: Fires each time the physical remote sends one of the commands above, so they appear in the history and can trigger automations. Only created when an infrared receiver is set up.
 
-The louvre position, economy, and powerful commands are buttons rather than switches because the remote sends the same command every time and the air conditioner itself keeps track of the result. Home Assistant has no way to know which position the louvre reached or whether economy ended up on or off. Not every model has all four functions. Pressing a button for a function your unit does not have does nothing.
+The louvre, economy, and powerful commands are buttons rather than switches because the remote sends the same command every time and the air conditioner itself keeps track of the result. Home Assistant has no way to know which position the louvre reached or whether economy ended up on or off. Not every model has all four functions. Pressing a button for a function your unit does not have does nothing.
 
 ### Supported modes
 
@@ -99,7 +99,7 @@ If your remote is set to Fahrenheit, the climate entity still works in the unit 
 
 If you also have an infrared receiver entity (from an IR blaster that can also listen), you can optionally select it during setup. When selected, the integration decodes signals from the physical Fujitsu General air conditioner remote and updates the climate entity to match, so the mode, target temperature, fan speed, and swing settings stay in sync.
 
-The remote's stateless buttons, such as economy, powerful, and the louvre positions, carry no state to sync. Those fire on the **Remote button** event entity instead, which records which button was pressed and when.
+The remote's stateless buttons, such as economy, powerful, and the louvre steps, carry no state to sync. Those fire on the **Remote button** event entity instead, which records which button was pressed and when.
 
 ## Known limitations
 
@@ -107,7 +107,7 @@ The remote's stateless buttons, such as economy, powerful, and the louvre positi
 - Even with physical remote state tracking enabled, the receiver reports what the remote sent, not what the unit is actually doing, so the two can still drift apart, for example if something blocks the line of sight.
 - Changing the target temperature, the fan speed, or the swing settings while the air conditioner is off is remembered rather than sent. It is applied with the next command that turns the unit on.
 - With physical remote state tracking, commands from the remote for a mode you did not select during setup are ignored, so the entity does not switch to a mode it cannot control.
-- The economy and powerful buttons, and the two louvre position buttons, send a command without being able to report the result, so they have no state in Home Assistant. With a receiver set up, pressing them on the physical remote is recorded by the **Remote button** event entity, but the resulting setting still cannot be read back.
+- The economy and powerful buttons, and the two louvre buttons, send a command without being able to report the result, so they have no state in Home Assistant. With a receiver set up, pressing them on the physical remote is recorded by the **Remote button** event entity, but the resulting setting still cannot be read back.
 - The remote's remaining functions, such as the timers, the outdoor unit low noise setting, and the 10 °C minimum heat mode, are not exposed.
 
 ## Troubleshooting
